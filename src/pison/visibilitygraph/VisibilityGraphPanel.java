@@ -18,11 +18,13 @@ import pison.graph.Path;
 import pison.pathfinding.algorithms.astar.Astar;
 import pison.pathfinding.algorithms.astar.EuclideanDistanceHeuristic;
 import pison.pathfinding.algorithms.dijkstra.Dijkstra;
+import pison.visibilitygraph.styles.LineStyle;
 
 
 public class VisibilityGraphPanel extends BasicGameState {
     private static final Color LineColor = Color.black;
     private static final Color FullCellColor = Color.blue;
+    private final float shortestPathLineWidth = 4.0F;
     private float offsetX = -10;
     private float cellWidth = 20;
     private float offsetY = -10;
@@ -30,10 +32,10 @@ public class VisibilityGraphPanel extends BasicGameState {
 
     private final VisibilityGraph visibilityGraph;
 
-    List<SimpleEntry<Path<Point>, Color>> pathList = new ArrayList<>();
+    List<SimpleEntry<Path<Point>, LineStyle>> pathList = new ArrayList<>();
 
-    public void addPath(Path<Point> p, Color c) {
-        pathList.add(new SimpleEntry<>(p, c));
+    public void addPath(Path<Point> path, LineStyle lineStyle) {
+        pathList.add(new SimpleEntry<>(path, lineStyle));
     }
 
     public VisibilityGraphPanel(VisibilityGraph visibilityGraph) {
@@ -93,24 +95,28 @@ public class VisibilityGraphPanel extends BasicGameState {
     }
 
     private void renderPaths(Graphics graphics) {
-        for (SimpleEntry<Path<Point>, Color> pathColorSimpleEntry : pathList) {
+        for (SimpleEntry<Path<Point>, LineStyle> pathColorSimpleEntry : pathList) {
             renderPath(graphics, pathColorSimpleEntry);
         }
     }
 
-    private void renderPath(Graphics graphics, SimpleEntry<Path<Point>, Color> pathColorPair) {
-        Color c = pathColorPair.getValue();
-        Path<Point> p = pathColorPair.getKey();
+    private void renderPath(Graphics graphics, SimpleEntry<Path<Point>, LineStyle> pathStylePair) {
+        LineStyle lineStyle = pathStylePair.getValue();
+        Path<Point> path = pathStylePair.getKey();
 
-        if (p.isEmpty())
+        if (path.isEmpty())
             return;
 
-        graphics.setColor(c);
-        for (int i = 0; i < p.size(); i++) {
-            Connection<Point> connection = p.get(i);
-            renderLine(graphics, connection, c);
-            renderLine(graphics, connection, c);
+        graphics.setColor(lineStyle.getColor());
+        graphics.setLineWidth(lineStyle.getWidth());
+
+        for (int i = 0; i < path.size(); i++) {
+            Connection<Point> connection = path.get(i);
+            renderLine(graphics, connection, lineStyle.getColor());
+            renderLine(graphics, connection, lineStyle.getColor());
         }
+
+        graphics.resetLineWidth();
     }
 
     private void renderPoint(Graphics graphics, Point node, Color fillColor) {
@@ -132,10 +138,10 @@ public class VisibilityGraphPanel extends BasicGameState {
         Path<Point> p2 = astar.find(visibilityGraph, visibilityGraph.startPoint, visibilityGraph.endPoint);
 
         if (p.equals(p2)) {
-            addPath(p, Color.green);
+            addPath(p, new LineStyle(Color.green, shortestPathLineWidth));
         } else {
-            addPath(p, Color.white);
-            addPath(p2, Color.yellow);
+            addPath(p, new LineStyle(Color.green, shortestPathLineWidth));
+            addPath(p2, new LineStyle(Color.green, shortestPathLineWidth));
         }
     }
 
