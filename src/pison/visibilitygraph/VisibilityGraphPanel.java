@@ -124,6 +124,21 @@ public class VisibilityGraphPanel extends BasicGameState {
         graphics.drawOval(x, y, cellWidth, cellHeight);
     }
 
+    public void prepareForRender() {
+        Dijkstra<Point> dijkstra = new Dijkstra<>();
+        Path<Point> p = dijkstra.find(visibilityGraph, visibilityGraph.startPoint, visibilityGraph.endPoint);
+
+        Astar<Point> astar = new Astar<>(new EuclideanDistanceHeuristic(visibilityGraph.endPoint));
+        Path<Point> p2 = astar.find(visibilityGraph, visibilityGraph.startPoint, visibilityGraph.endPoint);
+
+        if (p.equals(p2)) {
+            addPath(p, Color.green);
+        } else {
+            addPath(p, Color.white);
+            addPath(p2, Color.yellow);
+        }
+    }
+
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
         visibilityGraph.startPoint.setLocation(gameContainer.getInput().getMouseX(), gameContainer.getInput().getMouseY());
@@ -134,17 +149,6 @@ public class VisibilityGraphPanel extends BasicGameState {
 
         pathList.clear();
 
-        Dijkstra<Point> dijkstra = new Dijkstra<>();
-        Path<Point> p = dijkstra.find(visibilityGraph, visibilityGraph.startPoint, visibilityGraph.endPoint);
-
-        Astar<Point> astar = new Astar<>(new EuclideanDistanceHeuristic(visibilityGraph.endPoint));
-        Path<Point> p2 = astar.find(visibilityGraph, visibilityGraph.startPoint, visibilityGraph.endPoint);
-
-        if (p == p2) {
-            addPath(p, Color.pink);
-        } else {
-            addPath(p, Color.white);
-            addPath(p2, Color.yellow);
-        }
+        prepareForRender();
     }
 }

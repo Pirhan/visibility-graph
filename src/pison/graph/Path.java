@@ -1,6 +1,7 @@
 package pison.graph;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Path<Node> {
     List<Connection<Node>> edges;
@@ -23,5 +24,23 @@ public class Path<Node> {
 
     public void setEdges(List<Connection<Node>> edges) {
         this.edges = edges;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Path)) return false;
+
+        for (int i = 0; i < edges.size(); i++) {
+            if (edges.get(i) != ((Path<?>) o).edges.get(i)) {
+                return false;
+            }
+        }
+        return edges.size() == ((Path<?>) o).edges.size();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(edges);
     }
 }
