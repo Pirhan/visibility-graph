@@ -15,6 +15,9 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import pison.graph.Connection;
 import pison.graph.Path;
+import pison.pathfinding.algorithms.astar.Astar;
+import pison.pathfinding.algorithms.astar.EuclideanDistanceHeuristic;
+import pison.pathfinding.algorithms.dijkstra.Dijkstra;
 
 
 public class VisibilityGraphPanel extends BasicGameState {
@@ -108,7 +111,6 @@ public class VisibilityGraphPanel extends BasicGameState {
             renderLine(graphics, connection, c);
             renderLine(graphics, connection, c);
         }
-
     }
 
     private void renderPoint(Graphics graphics, Point node, Color fillColor) {
@@ -124,6 +126,24 @@ public class VisibilityGraphPanel extends BasicGameState {
 
     @Override
     public void update(GameContainer gameContainer, StateBasedGame stateBasedGame, int i) throws SlickException {
+        visibilityGraph.startPoint.setLocation(gameContainer.getInput().getMouseX(), gameContainer.getInput().getMouseY());
 
+        visibilityGraph.startPoint.setCenterX(gameContainer.getInput().getMouseX());
+        visibilityGraph.startPoint.setCenterY(gameContainer.getInput().getMouseY());
+        visibilityGraph.buildConnections();
+
+        pathList.clear();
+        Dijkstra dijkstra = new Dijkstra();
+        Astar astar = new Astar(new EuclideanDistanceHeuristic(visibilityGraph.endPoint));
+        Path p = dijkstra.find(visibilityGraph, visibilityGraph.startPoint, visibilityGraph.endPoint);
+
+        Path p2 = astar.find(visibilityGraph, visibilityGraph.startPoint, visibilityGraph.endPoint);
+
+        if (p == p2) {
+            addPath(p, Color.pink);
+        } else {
+            addPath(p, Color.white);
+            addPath(p2, Color.yellow);
+        }
     }
 }
