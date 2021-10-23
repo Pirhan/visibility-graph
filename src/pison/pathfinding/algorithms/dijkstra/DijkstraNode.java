@@ -3,7 +3,7 @@ package pison.pathfinding.algorithms.dijkstra;
 import pison.graph.Connection;
 import pison.pathfinding.algorithms.PathFindingNode;
 
-public class DijkstraNode<Node> implements PathFindingNode {
+public class DijkstraNode<Node> implements PathFindingNode<Node> {
     Node node;
     Connection<Node> connection;
     double costSoFar;

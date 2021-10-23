@@ -13,7 +13,7 @@ public class Path<Node> {
         return edges.size();
     }
 
-    public Connection get(int i) {
+    public Connection<Node> get(int i) {
         return edges.get(i);
     }
 

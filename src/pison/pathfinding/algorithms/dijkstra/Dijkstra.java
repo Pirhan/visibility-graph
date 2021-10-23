@@ -41,8 +41,8 @@ public class Dijkstra<Node> implements PathFinder<Node> {
                     if (endNodeCost >= oldEndRecord.getCost())
                         continue;
 
-                    openList.update(new DijkstraNode(endNode, connection, endNodeCost));
-                } else openList.insert(new DijkstraNode(endNode, connection, endNodeCost));
+                    openList.update(new DijkstraNode<>(endNode, connection, endNodeCost));
+                } else openList.insert(new DijkstraNode<>(endNode, connection, endNodeCost));
             }
 
             closedList.insert(current);
@@ -56,7 +56,7 @@ public class Dijkstra<Node> implements PathFinder<Node> {
     }
 
     private Path<Node> buildPath(PathFindingNode<Node> current, Node start, PathFindingList<Node> closed) {
-        Path<Node> path = new Path();
+        Path<Node> path = new Path<>();
         List<Connection<Node>> edges = new ArrayList<>();
 
         while (!current.getNode().equals(start)) {
@@ -64,7 +64,6 @@ public class Dijkstra<Node> implements PathFinder<Node> {
 
             edges.add(connection);
             current = closed.find(connection.getFrom());
-
         }
 
         Collections.reverse(edges);

@@ -7,6 +7,6 @@ public class EuclideanDistance {
         double x = Math.pow(point1.getX() - point2.getX(), 2.0);
         double y = Math.pow(point1.getY() - point2.getY(), 2.0);
 
-        return Math.sqrt(x+y);
+        return Math.sqrt(x + y);
     }
 }

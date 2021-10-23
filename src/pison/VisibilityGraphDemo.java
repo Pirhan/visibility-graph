@@ -36,11 +36,11 @@ public class VisibilityGraphDemo extends StateBasedGame {
         VisibilityGraphPanel vgp = new VisibilityGraphPanel(vg);
         VisibilityGraphDemo pfd = new VisibilityGraphDemo("VisibilityGraph Graph", vgp);
 
-        Dijkstra dijkstra = new Dijkstra();
-        Astar astar = new Astar(new EuclideanDistanceHeuristic(vg.endPoint));
-        Path p = dijkstra.find(vg, vg.startPoint, vg.endPoint);
+        Dijkstra<Point> dijkstra = new Dijkstra<>();
+        Astar<Point> astar = new Astar<>(new EuclideanDistanceHeuristic(vg.endPoint));
 
-        Path p2 = astar.find(vg, vg.startPoint, vg.endPoint);
+        Path<Point> p = dijkstra.find(vg, vg.startPoint, vg.endPoint);
+        Path<Point> p2 = astar.find(vg, vg.startPoint, vg.endPoint);
 
         vgp.addPath(p, Color.white);
         vgp.addPath(p2, Color.yellow);
@@ -78,8 +78,6 @@ public class VisibilityGraphDemo extends StateBasedGame {
         Point start = new Point(100, 360);
         Point end = new Point(560, 50);
 
-        VisibilityGraph vgp = new VisibilityGraph(start, end, p1, p2, p3, p4);
-
-        return vgp;
+        return new VisibilityGraph(start, end, p1, p2, p3, p4);
     }
 }

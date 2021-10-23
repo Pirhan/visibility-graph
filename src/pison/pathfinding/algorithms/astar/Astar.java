@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import pison.graph.Graph;
-
 import pison.graph.Connection;
 import pison.graph.Path;
 import pison.graph.PathFinder;
@@ -67,7 +66,7 @@ public class Astar<Node> implements PathFinder<Node> {
                     endNodeHeuristic = heuristic.estimate(endNode);
                 }
 
-                AstarNode<Node> endNodeRecord = new AstarNode<Node>(endNode, connection, endNodeCost, endNodeCost + endNodeHeuristic);
+                AstarNode<Node> endNodeRecord = new AstarNode<>(endNode, connection, endNodeCost, endNodeCost + endNodeHeuristic);
 
                 if (!openList.contains(endNode))
                     openList.insert(endNodeRecord);

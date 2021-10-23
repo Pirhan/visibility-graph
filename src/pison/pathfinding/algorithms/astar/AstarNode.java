@@ -1,10 +1,9 @@
 package pison.pathfinding.algorithms.astar;
 
-
 import pison.graph.Connection;
 import pison.pathfinding.algorithms.PathFindingNode;
 
-public class AstarNode<Node> implements PathFindingNode {
+public class AstarNode<Node> implements PathFindingNode<Node> {
     Node node;
     Connection<Node> connection;
     double costSoFar;

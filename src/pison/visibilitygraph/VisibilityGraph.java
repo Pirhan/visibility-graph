@@ -38,10 +38,10 @@ public class VisibilityGraph implements Graph<Point> {
 
     private void buildPolygons() {
 
-        for(Polygon polygon : this.polygons) {
+        for (Polygon polygon : this.polygons) {
             float[] points = polygon.getPoints();
 
-            for(int i = 1; i < points.length; i = i + 2) {
+            for (int i = 1; i < points.length; i = i + 2) {
                 this.nodes.add(new Point(points[i - 1], points[i]));
             }
         }
@@ -50,11 +50,11 @@ public class VisibilityGraph implements Graph<Point> {
     public void buildConnections() {
         this.connections = new HashMap<>();
 
-        for(int i = 0; i < this.nodes.size(); i++) {
+        for (int i = 0; i < this.nodes.size(); i++) {
             List<Connection<Point>> connectionList = new ArrayList<>();
 
-            for(int j = 0; j < this.nodes.size(); j++){
-                if(j != i && !intersects(this.nodes.get(i),this.nodes.get(j))) {
+            for (int j = 0; j < this.nodes.size(); j++) {
+                if (j != i && !intersects(this.nodes.get(i), this.nodes.get(j))) {
                     EuclideanDistanceHeuristic heuristic = new EuclideanDistanceHeuristic(this.nodes.get(i));
                     connectionList.add(new Connection<>(this.nodes.get(i), this.nodes.get(j), heuristic.estimate(this.nodes.get(j))));
                 }
@@ -65,24 +65,24 @@ public class VisibilityGraph implements Graph<Point> {
     }
 
     private boolean intersects(Point point1, Point point2) {
-        for(int i = 0 ; i < polygons.size(); i++) {
-            if(new Line(point1.getX(),point1.getY(),point2.getX(),point2.getY()).intersects(polygons.get(i))
-                    &&new Line(point1.getX() + 1,point1.getY(),point2.getX(),point2.getY()).intersects(polygons.get(i))
-                    &&new Line(point1.getX() - 1,point1.getY(),point2.getX(),point2.getY()).intersects(polygons.get(i))
-                    &&new Line(point1.getX(),point1.getY()+1,point2.getX(),point2.getY()).intersects(polygons.get(i))
-                    &&new Line(point1.getX() + 1,point1.getY()+1,point2.getX() + 1,point2.getY() + 1).intersects(polygons.get(i))
-                    &&new Line(point1.getX(),point1.getY()-1,point2.getX(),point2.getY()).intersects(polygons.get(i))
-                    &&new Line(point1.getX() - 1,point1.getY()-1,point2.getX(),point2.getY()).intersects(polygons.get(i))
-                    &&new Line(point1.getX()+1,point1.getY()-1,point2.getX(),point2.getY()).intersects(polygons.get(i))
-                    &&new Line(point1.getX() - 1,point1.getY()+1,point2.getX(),point2.getY()).intersects(polygons.get(i))
-                    &&new Line(point1.getX(),point1.getY(),point2.getX()+ 1,point2.getY()).intersects(polygons.get(i))
-                    &&new Line(point1.getX(),point1.getY(),point2.getX() - 1,point2.getY()).intersects(polygons.get(i))
-                    &&new Line(point1.getX(),point1.getY(),point2.getX(),point2.getY()+1).intersects(polygons.get(i))
-                    &&new Line(point1.getX(),point1.getY(),point2.getX(),point2.getY()-1).intersects(polygons.get(i))
-                    &&new Line(point1.getX() ,point1.getY()- 1,point2.getX(),point2.getY()-1).intersects(polygons.get(i))
-                    &&new Line(point1.getX(),point1.getY(),point2.getX()+1,point2.getY()-1).intersects(polygons.get(i))
-                    &&new Line(point1.getX(),point1.getY(),point2.getX() - 1,point2.getY()+1).intersects(polygons.get(i))
-                    ){
+        for (Polygon polygon : polygons) {
+            if (new Line(point1.getX(), point1.getY(), point2.getX(), point2.getY()).intersects(polygon)
+                    && new Line(point1.getX() + 1, point1.getY(), point2.getX(), point2.getY()).intersects(polygon)
+                    && new Line(point1.getX() - 1, point1.getY(), point2.getX(), point2.getY()).intersects(polygon)
+                    && new Line(point1.getX(), point1.getY() + 1, point2.getX(), point2.getY()).intersects(polygon)
+                    && new Line(point1.getX() + 1, point1.getY() + 1, point2.getX() + 1, point2.getY() + 1).intersects(polygon)
+                    && new Line(point1.getX(), point1.getY() - 1, point2.getX(), point2.getY()).intersects(polygon)
+                    && new Line(point1.getX() - 1, point1.getY() - 1, point2.getX(), point2.getY()).intersects(polygon)
+                    && new Line(point1.getX() + 1, point1.getY() - 1, point2.getX(), point2.getY()).intersects(polygon)
+                    && new Line(point1.getX() - 1, point1.getY() + 1, point2.getX(), point2.getY()).intersects(polygon)
+                    && new Line(point1.getX(), point1.getY(), point2.getX() + 1, point2.getY()).intersects(polygon)
+                    && new Line(point1.getX(), point1.getY(), point2.getX() - 1, point2.getY()).intersects(polygon)
+                    && new Line(point1.getX(), point1.getY(), point2.getX(), point2.getY() + 1).intersects(polygon)
+                    && new Line(point1.getX(), point1.getY(), point2.getX(), point2.getY() - 1).intersects(polygon)
+                    && new Line(point1.getX(), point1.getY() - 1, point2.getX(), point2.getY() - 1).intersects(polygon)
+                    && new Line(point1.getX(), point1.getY(), point2.getX() + 1, point2.getY() - 1).intersects(polygon)
+                    && new Line(point1.getX(), point1.getY(), point2.getX() - 1, point2.getY() + 1).intersects(polygon)
+            ) {
                 return true;
             }
         }

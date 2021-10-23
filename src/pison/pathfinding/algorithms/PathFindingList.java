@@ -30,7 +30,7 @@ public class PathFindingList<Node> {
 
     public PathFindingNode<Node> removeSmallest() {
         Node min = heap.min().getData();
-        PathFindingNode minRecord = pathFindingHash.get(min);
+        PathFindingNode<Node> minRecord = pathFindingHash.get(min);
         fibonacciHash.remove(min);
         pathFindingHash.remove(min);
         heap.removeMin();
@@ -51,7 +51,6 @@ public class PathFindingList<Node> {
             return;
         heap.decreaseKey(fibonacciHash.get(record.getNode()), record.getCost());
         pathFindingHash.put(record.getNode(), record);
-
     }
 
     public void remove(Node endNode) {

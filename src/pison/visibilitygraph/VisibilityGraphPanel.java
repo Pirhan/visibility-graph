@@ -30,9 +30,9 @@ public class VisibilityGraphPanel extends BasicGameState {
 
     private final VisibilityGraph visibilityGraph;
 
-    List<SimpleEntry<Path, Color>> pathList = new ArrayList<>();
+    List<SimpleEntry<Path<Point>, Color>> pathList = new ArrayList<>();
 
-    public void addPath(Path p, Color c) {
+    public void addPath(Path<Point> p, Color c) {
         pathList.add(new SimpleEntry<>(p, c));
     }
 
@@ -93,14 +93,14 @@ public class VisibilityGraphPanel extends BasicGameState {
     }
 
     private void renderPaths(Graphics graphics) {
-        for (SimpleEntry<Path, Color> pathColorSimpleEntry : pathList) {
+        for (SimpleEntry<Path<Point>, Color> pathColorSimpleEntry : pathList) {
             renderPath(graphics, pathColorSimpleEntry);
         }
     }
 
-    private void renderPath(Graphics graphics, SimpleEntry<Path, Color> pathColorPair) {
+    private void renderPath(Graphics graphics, SimpleEntry<Path<Point>, Color> pathColorPair) {
         Color c = pathColorPair.getValue();
-        Path p = pathColorPair.getKey();
+        Path<Point> p = pathColorPair.getKey();
 
         if (p.isEmpty())
             return;
@@ -133,11 +133,12 @@ public class VisibilityGraphPanel extends BasicGameState {
         visibilityGraph.buildConnections();
 
         pathList.clear();
-        Dijkstra dijkstra = new Dijkstra();
-        Astar astar = new Astar(new EuclideanDistanceHeuristic(visibilityGraph.endPoint));
-        Path p = dijkstra.find(visibilityGraph, visibilityGraph.startPoint, visibilityGraph.endPoint);
 
-        Path p2 = astar.find(visibilityGraph, visibilityGraph.startPoint, visibilityGraph.endPoint);
+        Dijkstra<Point> dijkstra = new Dijkstra<>();
+        Path<Point> p = dijkstra.find(visibilityGraph, visibilityGraph.startPoint, visibilityGraph.endPoint);
+
+        Astar<Point> astar = new Astar<>(new EuclideanDistanceHeuristic(visibilityGraph.endPoint));
+        Path<Point> p2 = astar.find(visibilityGraph, visibilityGraph.startPoint, visibilityGraph.endPoint);
 
         if (p == p2) {
             addPath(p, Color.pink);
