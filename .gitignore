@@ -1,0 +1,6 @@
+# InteliJ Idea
+.idea
+visibility-graph.iml
+
+# libs
+libs/slick
